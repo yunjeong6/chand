@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C:hand | 손끝에 머무는 보습, 핸드크림 쇼핑몰</title>
+  <meta name="description" content="C:hand 핸드크림 쇼핑몰 - 보습, 향기, 집중 케어, 선물 세트">
+  <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== 머리말 ===== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="#home" class="logo" aria-label="C:hand 홈">C<span>:</span>hand</a>
+
+      <form class="search" id="searchForm" role="search">
+        <input type="search" id="searchInput" placeholder="핸드크림 검색" aria-label="상품 검색">
+        <button type="submit" aria-label="검색">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </form>
+
+      <div class="header-util">
+        <span id="userGreeting" class="greeting"></span>
+        <a href="#login" id="loginLink">로그인</a>
+        <a href="#signup" id="signupLink">회원가입</a>
+        <a href="#mypage" id="mypageLink" hidden>마이페이지</a>
+        <button type="button" id="logoutBtn" class="link-btn" hidden>로그아웃</button>
+        <a href="#cart" class="cart-link" aria-label="장바구니">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z M9 8V6a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          <span id="cartCount" class="badge">0</span>
+        </a>
+      </div>
+    </div>
+
+    <nav class="main-nav" aria-label="주 메뉴">
+      <ul id="navList">
+        <li><a href="#products" data-cat="전체">전체 상품</a></li>
+        <!-- 분류 메뉴는 script.js 의 CATEGORIES 배열로 자동 생성 -->
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+
+    <!-- ===== 홈 ===== -->
+    <section id="view-home" class="view">
+      <div class="slider" id="slider" aria-roledescription="슬라이드">
+        <div class="slide is-active">
+          <img src="img/slide-1.jpg" onerror="this.onerror=null;this.src='img/slide-1.svg'" alt="크림색 선반 위에 놓인 C:hand 핸드크림 세 개">
+          <div class="slide-text"><p class="eyebrow">NEW SEASON</p><h2>손끝에 머무는<br>부드러운 보습</h2><a href="#products" class="btn" data-cat="전체">전체 상품 보기</a></div>
+        </div>
+        <div class="slide">
+          <img src="img/slide-2.jpg" onerror="this.onerror=null;this.src='img/slide-2.svg'" alt="꽃잎 사이에 놓인 로즈 핸드크림">
+          <div class="slide-text"><p class="eyebrow">PERFUMED</p><h2>하루 종일 은은한<br>향기 핸드크림</h2><a href="#products" class="btn" data-cat="향기">향기 라인 보기</a></div>
+        </div>
+        <div class="slide">
+          <img src="img/slide-3.jpg" onerror="this.onerror=null;this.src='img/slide-3.svg'" alt="손바닥 위의 크림과 세라마이드 크림 단지">
+          <div class="slide-text"><p class="eyebrow">INTENSIVE CARE</p><h2>건조한 손을 위한<br>집중 케어</h2><a href="#products" class="btn" data-cat="집중 케어">집중 케어 보기</a></div>
+        </div>
+        <div class="slide">
+          <img src="img/slide-4.jpg" onerror="this.onerror=null;this.src='img/slide-4.svg'" alt="리본이 묶인 선물 상자와 핸드크림">
+          <div class="slide-text"><p class="eyebrow">GIFT</p><h2>마음을 전하는<br>핸드크림 선물 세트</h2><a href="#products" class="btn" data-cat="선물 세트">선물 세트 보기</a></div>
+        </div>
+        <div class="slider-dots" id="sliderDots" role="tablist" aria-label="슬라이드 선택"></div>
+      </div>
+
+      <section class="home-block">
+        <h2 class="block-title">분류별 쇼핑</h2>
+        <div class="cat-cards" id="catCards"></div>
+      </section>
+
+      <section class="home-block">
+        <h2 class="block-title">추천 상품</h2>
+        <div class="product-grid" id="bestGrid"></div>
+      </section>
+
+      <section class="home-block benefit">
+        <h2 class="block-title">C:hand 회원 혜택</h2>
+        <p class="benefit-lead">지금 가입하면 <strong>3,000P</strong>를 바로 드려요.</p>
+        <ul class="grade-list" id="gradeList"></ul>
+      </section>
+    </section>
+
+    <!-- ===== 상품 목록 ===== -->
+    <section id="view-products" class="view" hidden>
+      <div class="page-head">
+        <h2 id="listTitle">전체 상품</h2>
+        <p id="listInfo" class="muted"></p>
+      </div>
+      <div class="filter-bar" id="filterBar" role="group" aria-label="분류 필터"></div>
+      <div class="sort-bar">
+        <label for="sortSelect">정렬</label>
+        <select id="sortSelect">
+          <option value="basic">기본순</option>
+          <option value="low">낮은 가격순</option>
+          <option value="high">높은 가격순</option>
+          <option value="name">이름순</option>
+        </select>
+      </div>
+      <div class="product-grid" id="productGrid"></div>
+      <p class="empty" id="emptyList" hidden>검색 결과가 없어요. 다른 단어로 찾아보세요.</p>
+    </section>
+
+    <!-- ===== 상품 상세 ===== -->
+    <section id="view-detail" class="view" hidden>
+      <div class="detail" id="detailBox"></div>
+    </section>
+
+    <!-- ===== 장바구니 ===== -->
+    <section id="view-cart" class="view" hidden>
+      <div class="page-head"><h2>장바구니</h2></div>
+      <div class="cart-layout">
+        <div id="cartList" class="cart-list"></div>
+        <aside class="summary" id="cartSummary"></aside>
+      </div>
+    </section>
+
+    <!-- ===== 체험 결제 ===== -->
+    <section id="view-checkout" class="view" hidden>
+      <div class="page-head">
+        <h2>주문 · 결제</h2>
+        <p class="muted">체험 결제입니다. 실제 결제는 이루어지지 않고 주문 내역만 저장돼요.</p>
+      </div>
+      <form id="checkoutForm" class="checkout-layout">
+        <div class="form-card">
+          <h3>배송 정보</h3>
+          <label>받는 분<input type="text" id="coName" required maxlength="20"></label>
+          <label>연락처<input type="tel" id="coPhone" required placeholder="010-0000-0000" pattern="01[0-9]-?[0-9]{3,4}-?[0-9]{4}"></label>
+          <label>주소<input type="text" id="coAddr" required maxlength="80"></label>
+          <label>배송 메모<input type="text" id="coMemo" maxlength="40" placeholder="예: 문 앞에 놓아주세요"></label>
+
+          <h3>결제 수단 (체험)</h3>
+          <div class="pay-methods">
+            <label class="radio"><input type="radio" name="pay" value="체험 카드결제" checked> 카드결제</label>
+            <label class="radio"><input type="radio" name="pay" value="체험 계좌이체"> 계좌이체</label>
+            <label class="radio"><input type="radio" name="pay" value="체험 간편결제"> 간편결제</label>
+          </div>
+
+          <h3>포인트 사용</h3>
+          <div class="point-use">
+            <input type="number" id="coPoint" min="0" step="100" value="0" inputmode="numeric" aria-label="사용할 포인트">
+            <button type="button" id="usePointAll" class="btn btn-line">전액 사용</button>
+          </div>
+          <p class="muted small" id="coPointInfo"></p>
+        </div>
+        <aside class="summary" id="checkoutSummary"></aside>
+      </form>
+    </section>
+
+    <!-- ===== 주문 완료 ===== -->
+    <section id="view-complete" class="view" hidden>
+      <div class="complete" id="completeBox"></div>
+    </section>
+
+    <!-- ===== 로그인 ===== -->
+    <section id="view-login" class="view" hidden>
+      <form class="auth-card" id="loginForm">
+        <h2>로그인</h2>
+        <label>아이디<input type="text" id="loginId" required autocomplete="username"></label>
+        <label>비밀번호<input type="password" id="loginPw" required autocomplete="current-password"></label>
+        <p class="form-msg" id="loginMsg" role="alert"></p>
+        <button type="submit" class="btn btn-block">로그인</button>
+        <p class="auth-switch">아직 회원이 아니신가요? <a href="#signup">회원가입</a></p>
+      </form>
+    </section>
+
+    <!-- ===== 회원가입 ===== -->
+    <section id="view-signup" class="view" hidden>
+      <form class="auth-card" id="signupForm">
+        <h2>회원가입</h2>
+        <p class="muted small">가입 즉시 3,000P 적립</p>
+        <label>아이디 (영문·숫자 4~12자)<input type="text" id="suId" required pattern="[A-Za-z0-9]{4,12}" autocomplete="username"></label>
+        <label>비밀번호 (6자 이상)<input type="password" id="suPw" required minlength="6" autocomplete="new-password"></label>
+        <label>비밀번호 확인<input type="password" id="suPw2" required minlength="6" autocomplete="new-password"></label>
+        <label>이름<input type="text" id="suName" required maxlength="20"></label>
+        <label>이메일<input type="email" id="suEmail" required></label>
+        <label>연락처<input type="tel" id="suPhone" placeholder="010-0000-0000" pattern="01[0-9]-?[0-9]{3,4}-?[0-9]{4}"></label>
+        <label class="check"><input type="checkbox" id="suAgree" required> 이용약관 및 개인정보 수집에 동의합니다.</label>
+        <p class="form-msg" id="signupMsg" role="alert"></p>
+        <button type="submit" class="btn btn-block">가입하고 3,000P 받기</button>
+        <p class="auth-switch">이미 회원이신가요? <a href="#login">로그인</a></p>
+      </form>
+    </section>
+
+    <!-- ===== 마이페이지 ===== -->
+    <section id="view-mypage" class="view" hidden>
+      <div class="page-head"><h2>마이페이지</h2></div>
+      <div class="my-top" id="myTop"></div>
+      <div class="my-block">
+        <h3>주문 내역</h3>
+        <div id="orderList"></div>
+      </div>
+      <div class="my-block">
+        <h3>포인트 내역</h3>
+        <div id="pointList"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== 꼬리말 ===== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="logo small-logo">C<span>:</span>hand</p>
+      <p>손끝에 머무는 보습, 씨핸드</p>
+      <p class="muted small">이 쇼핑몰은 「경영데이터베이스및실습」 수업용 체험 쇼핑몰이며 실제 결제와 배송은 이루어지지 않습니다.</p>
+      <p class="muted small">© 2026 C:hand</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
